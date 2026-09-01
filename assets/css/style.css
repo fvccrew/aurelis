@@ -1522,6 +1522,10 @@ body {
 
   .side-index { display: none; }
 
+  /* the absolutely-positioned scroll hint can overlap the feature
+     description at this content height; not needed on touch devices. */
+  .scroll-hint { display: none; }
+
   .site-nav { padding: 16px 5vw; }
 
   .manifesto { gap: 20px; padding: 10vh 7vw; }

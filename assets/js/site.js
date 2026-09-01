@@ -300,9 +300,31 @@
 
     buckets.forEach((bucket, i) => {
       cols[i].innerHTML = bucket.concat(bucket).map(({ src, caption }) =>
-        `<figure class="unfurl-item"><img src="${src}" alt="${caption}" decoding="async"></figure>`
+        `<figure class="unfurl-item"><img data-src="${src}" alt="${caption}" decoding="async"></figure>`
       ).join('');
     });
+
+    // stagger the network requests instead of firing them all at once, and
+    // retry once on failure: mobile connections occasionally hit a transient
+    // error when this many images load in a single burst.
+    const galleryImgs = grid.querySelectorAll('img[data-src]');
+    function loadWithRetry(img, attempt) {
+      const src = img.dataset.src;
+      img.onerror = () => {
+        if (attempt < 2) {
+          setTimeout(() => loadWithRetry(img, attempt + 1), 600);
+        }
+      };
+      img.src = src;
+    }
+    let gi = 0;
+    function loadNextGalleryImg() {
+      if (gi >= galleryImgs.length) return;
+      loadWithRetry(galleryImgs[gi], 0);
+      gi += 1;
+      (window.requestIdleCallback || window.requestAnimationFrame)(loadNextGalleryImg);
+    }
+    loadNextGalleryImg();
 
     const tl = gsap.timeline({
       scrollTrigger: {

@@ -18,12 +18,25 @@
     let i = 2;
     function loadNext() {
       if (i > TOTAL_FRAMES) return;
-      const img = new Image();
-      img.onload = img.onerror = () => {
+      const src = framePath(i);
+      const advance = () => {
         i += 1;
         (window.requestIdleCallback || window.requestAnimationFrame)(loadNext);
       };
-      img.src = framePath(i);
+      const img = new Image();
+      let retried = false;
+      img.onload = advance;
+      img.onerror = () => {
+        // mobile connections occasionally hit a transient error on a burst
+        // of requests: retry once before giving up on this frame.
+        if (!retried) {
+          retried = true;
+          setTimeout(() => { img.src = src; }, 600);
+        } else {
+          advance();
+        }
+      };
+      img.src = src;
     }
     loadNext();
   }
