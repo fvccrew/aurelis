@@ -228,12 +228,12 @@ body {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 100vmax;
-  height: 100vmax;
+  width: 70vmax;
+  height: 70vmax;
   transform: translate(-50%, -50%);
   border-radius: 50%;
   background-color: #1a1a1a;
-  opacity: 0.3;
+  opacity: 0.14;
   filter: blur(100px);
 }
 
@@ -1501,7 +1501,7 @@ body {
   /* 100vmax is dominated by the (tall) viewport height on portrait
      phones, making the halo cover the entire screen in a flat wash of
      color instead of a contained glow; size it off the width instead. */
-  .halo { width: 140vw; height: 140vw; opacity: 0.22; }
+  .halo { width: 120vw; height: 120vw; opacity: 0.12; }
 
   .hero-pin { height: 480vh; }
   .hero-stage {
