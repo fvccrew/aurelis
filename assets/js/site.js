@@ -571,6 +571,19 @@
     initClosing();
     runPreloader();
     ScrollTrigger.refresh();
+
+    // custom fonts swapping in after the initial layout reflows the page
+    // (text reflows to different metrics), which leaves every scroll
+    // trigger's recorded start/end position stale — most noticeable on a
+    // slower connection where the font takes longer to arrive. Recompute
+    // once the swap is actually done.
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => ScrollTrigger.refresh());
+    }
+
+    // images loading after layout (even non-lazy ones, on a slow
+    // connection) can shift content the same way; catch stragglers too.
+    window.addEventListener('load', () => ScrollTrigger.refresh());
   }
 
   if (document.readyState === 'loading') {
