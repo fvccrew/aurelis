@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/icons/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+<title>AURELIS CHRONO — La précision en action</title>
+<link rel="preload" href="assets/fonts/cormorant-garamond.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/img/chrono.webp" as="image" fetchpriority="high">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<div class="page-fade" id="pageFade"></div>
+<div class="grain" aria-hidden="true"></div>
+
+<div class="bg-fx" aria-hidden="true">
+  <canvas id="bgCanvas"></canvas>
+  <div class="halo" id="halo" style="background-color:#3a2420"></div>
+</div>
+
+<nav class="site-nav" id="siteNav">
+  <a href="index.html" class="nav-mark magnetic">A</a>
+  <div class="nav-links">
+    <a href="index.html" class="magnetic">Accueil</a>
+    <a href="index.html#collection" class="magnetic">Collection</a>
+    <a href="index.html#savoir-faire" class="magnetic nav-optional">Savoir-faire</a>
+    <a href="contact.html" class="magnetic">Contact</a>
+  </div>
+</nav>
+
+<header class="detail-hero" style="--accent:#b5423a">
+  <p class="detail-eyebrow" data-reveal>AURELIS / CHRONO</p>
+  <h1 class="detail-title" data-line>LA PRÉCISION EN ACTION</h1>
+  <p class="detail-desc" data-reveal>AURELIS CHRONO incarne la performance et la maîtrise du temps. Conçue pour ceux qui exigent l'excellence, cette chronographe allie technicité horlogère et design contemporain.</p>
+</header>
+
+<div class="detail-hero-media">
+  <img src="assets/img/chrono.webp" alt="AURELIS CHRONO" width="1536" height="1024" fetchpriority="high" decoding="async" data-reveal>
+</div>
+
+<section class="detail-specs" style="--accent:#b5423a">
+  <p class="detail-eyebrow" data-reveal>FICHE TECHNIQUE</p>
+  <h2 class="detail-h2" data-line>Chaque millimètre compte.</h2>
+  <dl class="spec-table">
+    <div class="spec-row"><dt>Diamètre</dt><dd>42 mm</dd></div>
+    <div class="spec-row"><dt>Épaisseur</dt><dd>12,8 mm</dd></div>
+    <div class="spec-row"><dt>Boîtier</dt><dd>Acier 316L</dd></div>
+    <div class="spec-row"><dt>Lunette</dt><dd>Acier poli</dd></div>
+    <div class="spec-row"><dt>Verre</dt><dd>Saphir bombé, antireflet</dd></div>
+    <div class="spec-row"><dt>Mouvement</dt><dd>Automatique chronographe</dd></div>
+    <div class="spec-row"><dt>Réserve de marche</dt><dd>48 heures</dd></div>
+    <div class="spec-row"><dt>Étanchéité</dt><dd>10 ATM</dd></div>
+    <div class="spec-row"><dt>Cadran</dt><dd>Noir mat</dd></div>
+    <div class="spec-row"><dt>Bracelet</dt><dd>Cuir perforé noir</dd></div>
+    <div class="spec-row"><dt>Fermoir</dt><dd>Boucle déployante acier</dd></div>
+    <div class="spec-row"><dt>Fabrication</dt><dd>Swiss Made</dd></div>
+  </dl>
+</section>
+
+<section class="detail-closeups" style="--accent:#b5423a">
+  <p class="detail-eyebrow" data-reveal>GROS PLAN</p>
+  <h2 class="detail-h2" data-line>Le détail qui fait la différence.</h2>
+  <div class="detail-views">
+    <div class="view-card"><img src="assets/img/savoirfaire/chrono-cadran.webp" alt="AURELIS CHRONO, cadran" width="532" height="353" loading="lazy" decoding="async"><span class="view-label">Cadran</span></div>
+    <div class="view-card"><img src="assets/img/savoirfaire/chrono-couronne.webp" alt="AURELIS CHRONO, couronne" width="532" height="353" loading="lazy" decoding="async"><span class="view-label">Couronne</span></div>
+    <div class="view-card"><img src="assets/img/savoirfaire/chrono-bracelet.webp" alt="AURELIS CHRONO, bracelet" width="532" height="353" loading="lazy" decoding="async"><span class="view-label">Bracelet</span></div>
+  </div>
+</section>
+
+<section class="detail-positioning" style="--accent:#b5423a">
+  <p class="detail-eyebrow" data-reveal>POURQUOI CE MODÈLE</p>
+  <h2 class="detail-h2" data-line>Conçue pour l'exigence.</h2>
+  <ul class="positioning-list">
+    <li class="positioning-item"><span class="pos-num">01</span><span>Chronographe haute précision</span></li>
+    <li class="positioning-item"><span class="pos-num">02</span><span>Design sportif contemporain</span></li>
+    <li class="positioning-item"><span class="pos-num">03</span><span>Matériaux premium — acier 316L</span></li>
+    <li class="positioning-item"><span class="pos-num">04</span><span>Étanchéité 10 ATM, prête à tout</span></li>
+    <li class="positioning-item"><span class="pos-num">05</span><span>Réserve de marche 48 heures</span></li>
+    <li class="positioning-item"><span class="pos-num">06</span><span>Fabrication Swiss Made</span></li>
+  </ul>
+</section>
+
+<section class="detail-sketch">
+  <p class="detail-eyebrow" data-reveal>ESQUISSES</p>
+  <h2 class="detail-h2" data-line>Du crayon à l'objet.</h2>
+  <div class="sketch-frame" data-reveal>
+    <img src="assets/img/detail/chrono-esquisses.webp" alt="Esquisses AURELIS CHRONO" width="858" height="583" loading="lazy" decoding="async">
+  </div>
+</section>
+
+<section class="detail-siblings">
+  <p class="detail-eyebrow" data-reveal>COLLECTION</p>
+  <h2 class="detail-h2" data-line>Découvrir les autres modèles.</h2>
+  <div class="siblings-grid">
+    <a href="noir.html" class="sibling-card">
+      <img src="assets/img/thumb/noir.webp" alt="AURELIS NOIR" width="700" height="467" loading="lazy" decoding="async">
+      <span class="sibling-name">NOIR</span>
+    </a>
+    <a href="origin.html" class="sibling-card">
+      <img src="assets/img/thumb/origin.webp" alt="AURELIS ORIGIN" width="700" height="467" loading="lazy" decoding="async">
+      <span class="sibling-name">ORIGIN</span>
+    </a>
+    <a href="skeleton.html" class="sibling-card">
+      <img src="assets/img/thumb/skeleton.webp" alt="AURELIS SKELETON" width="700" height="467" loading="lazy" decoding="async">
+      <span class="sibling-name">SKELETON</span>
+    </a>
+  </div>
+</section>
+
+<section class="detail-cta">
+  <h2 class="detail-h2" data-line>Explorez le reste de la collection.</h2>
+  <div class="cta-links">
+    <a href="index.html#collection" class="btn magnetic">Voir toutes les montres</a>
+    <a href="contact.html" class="btn btn--outline magnetic">Prendre rendez-vous</a>
+  </div>
+</section>
+
+<footer class="mini-footer">
+  <a href="index.html" class="nav-mark magnetic">A</a>
+  <div class="footer-links">
+    <a href="index.html" class="magnetic">Accueil</a>
+    <span>·</span>
+    <a href="index.html#collection" class="magnetic">Collection</a>
+    <span>·</span>
+    <a href="contact.html" class="magnetic">Contact</a>
+  </div>
+  <p class="footer-legal">© 2026 AURELIS. Tous droits réservés. — <a href="mentions-legales.html">Mentions légales</a></p>
+</footer>
+
+<script src="assets/js/vendor/gsap.min.js"></script>
+<script src="assets/js/vendor/ScrollTrigger.min.js"></script>
+<script src="assets/js/vendor/lenis.min.js"></script>
+<script src="assets/js/site.js"></script>
+<script src="assets/js/transitions.js"></script>
+</body>
+</html>
