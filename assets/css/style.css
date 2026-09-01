@@ -1490,6 +1490,11 @@ body {
 }
 
 @media (max-width: 860px) {
+  /* 100vmax is dominated by the (tall) viewport height on portrait
+     phones, making the halo cover the entire screen in a flat wash of
+     color instead of a contained glow; size it off the width instead. */
+  .halo { width: 140vw; height: 140vw; opacity: 0.22; }
+
   .hero-pin { height: 480vh; }
   .hero-stage {
     display: flex;

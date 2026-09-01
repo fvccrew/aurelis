@@ -13,32 +13,35 @@
   /* ---------- progressive background preload ---------- */
   /* frame 1 is already the initial <img> src and paints immediately;
      the rest warm the browser cache in the background so later scroll
-     frames swap instantly with no network stall. */
+     frames swap instantly with no network stall. Loaded a handful at a
+     time (rather than strictly one-by-one) so the full sequence is
+     cached well before the user finishes scrolling through it — a
+     single-file queue was too slow to keep up with a quick scroll,
+     which is what made the decomposition feel choppy. */
   function preloadFrames() {
-    let i = 2;
-    function loadNext() {
-      if (i > TOTAL_FRAMES) return;
+    const CONCURRENCY = 6;
+    let next = 2;
+
+    function loadOne() {
+      if (next > TOTAL_FRAMES) return;
+      const i = next;
+      next += 1;
       const src = framePath(i);
-      const advance = () => {
-        i += 1;
-        (window.requestIdleCallback || window.requestAnimationFrame)(loadNext);
-      };
       const img = new Image();
       let retried = false;
-      img.onload = advance;
+      img.onload = loadOne;
       img.onerror = () => {
-        // mobile connections occasionally hit a transient error on a burst
-        // of requests: retry once before giving up on this frame.
         if (!retried) {
           retried = true;
           setTimeout(() => { img.src = src; }, 600);
         } else {
-          advance();
+          loadOne();
         }
       };
       img.src = src;
     }
-    loadNext();
+
+    for (let w = 0; w < CONCURRENCY; w += 1) loadOne();
   }
 
   /* ---------- frame sequence ---------- */
