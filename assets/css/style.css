@@ -1133,7 +1133,8 @@ body {
 
 .view-card img {
   width: 100%;
-  aspect-ratio: 4 / 5;
+  height: auto;
+  aspect-ratio: 3 / 2;
   object-fit: cover;
   object-position: center;
 }
@@ -1354,6 +1355,7 @@ body {
 
 .sibling-card img {
   width: 100%;
+  height: auto;
   aspect-ratio: 4 / 5;
   object-fit: contain;
   transition: transform 0.6s ease;
@@ -1484,7 +1486,7 @@ body {
   .detail-hero-media img { max-width: 82vw; }
   .detail-views { grid-template-columns: repeat(3, 1fr); gap: 10px; padding-bottom: 8vh; }
   .view-card { padding: 12px 8px; gap: 10px; }
-  .view-card img { aspect-ratio: 3 / 4; }
+  .view-card img { aspect-ratio: 3 / 2; }
   .view-label { font-size: 0.56rem; letter-spacing: 0.12em; }
   .siblings-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
   .sibling-card { padding: 12px 8px; gap: 10px; }
