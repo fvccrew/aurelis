@@ -243,7 +243,7 @@
 
     buckets.forEach((bucket, i) => {
       cols[i].innerHTML = bucket.concat(bucket).map(({ src, caption }) =>
-        `<figure class="unfurl-item"><img src="${src}" alt="${caption}" loading="lazy" decoding="async"></figure>`
+        `<figure class="unfurl-item"><img src="${src}" alt="${caption}" decoding="async"></figure>`
       ).join('');
     });
 
