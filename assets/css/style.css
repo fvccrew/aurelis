@@ -141,6 +141,74 @@ body {
   100% { transform: translate(0, 0); }
 }
 
+/* ---------- lightbox ---------- */
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8vh 6vw;
+  background: rgba(0, 0, 0, 0.92);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.lightbox.is-open {
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.lightbox-img {
+  max-width: 88vw;
+  max-height: 84vh;
+  object-fit: contain;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 28px;
+  right: 32px;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.lightbox-close:hover {
+  border-color: var(--ink);
+}
+
+.lightbox-caption {
+  position: absolute;
+  bottom: 32px;
+  left: 0;
+  right: 0;
+  margin: 0;
+  text-align: center;
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+
+@media (max-width: 680px) {
+  .lightbox-close { top: 16px; right: 16px; width: 36px; height: 36px; font-size: 1.3rem; }
+  .lightbox-caption { bottom: 20px; font-size: 0.6rem; }
+}
+
 /* ---------- ambient background (gears + halo) ---------- */
 
 .bg-fx {
@@ -1137,6 +1205,12 @@ body {
   aspect-ratio: 3 / 2;
   object-fit: cover;
   object-position: center;
+  cursor: zoom-in;
+  transition: transform 0.5s ease;
+}
+
+.view-card:hover img {
+  transform: scale(1.05);
 }
 
 .view-label {

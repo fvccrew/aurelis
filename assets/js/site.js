@@ -215,6 +215,63 @@
     });
   }
 
+  /* ---------- watch detail page: close-up lightbox ---------- */
+
+  function initLightbox() {
+    const triggers = document.querySelectorAll('.detail-closeups .view-card img');
+    if (!triggers.length) return;
+
+    const lightbox = document.createElement('div');
+    lightbox.className = 'lightbox';
+    lightbox.innerHTML = `
+      <button class="lightbox-close" aria-label="Fermer">&times;</button>
+      <img class="lightbox-img" alt="">
+      <p class="lightbox-caption"></p>
+    `;
+    document.body.appendChild(lightbox);
+
+    const img = lightbox.querySelector('.lightbox-img');
+    const caption = lightbox.querySelector('.lightbox-caption');
+    const closeBtn = lightbox.querySelector('.lightbox-close');
+
+    function open(src, alt) {
+      img.src = src;
+      img.alt = alt;
+      caption.textContent = alt;
+      lightbox.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+      gsap.set(lightbox, { opacity: 0 });
+      gsap.set(img, { opacity: 0, scale: 0.92 });
+      gsap.to(lightbox, { opacity: 1, duration: 0.3, ease: 'power2.out' });
+      gsap.to(img, { opacity: 1, scale: 1, duration: 0.45, ease: 'power3.out', delay: 0.05 });
+    }
+
+    function close() {
+      gsap.to(img, { opacity: 0, scale: 0.92, duration: 0.25, ease: 'power2.in' });
+      gsap.to(lightbox, {
+        opacity: 0,
+        duration: 0.3,
+        ease: 'power2.in',
+        onComplete: () => {
+          lightbox.classList.remove('is-open');
+          document.body.style.overflow = '';
+        }
+      });
+    }
+
+    triggers.forEach((el) => {
+      el.addEventListener('click', () => open(el.currentSrc || el.src, el.alt));
+    });
+
+    closeBtn.addEventListener('click', close);
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) close();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && lightbox.classList.contains('is-open')) close();
+    });
+  }
+
   /* ---------- craft: unfurling 3D parallax gallery ---------- */
 
   function initUnfurlGallery() {
@@ -487,6 +544,7 @@
     initSwatchReveals();
     initInspirationReveals();
     initDetailReveals();
+    initLightbox();
     initStats();
     initClosing();
     runPreloader();
