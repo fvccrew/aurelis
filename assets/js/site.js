@@ -16,7 +16,6 @@
     lenis = new Lenis({ duration: 1.1, smoothWheel: true });
     lenis.on('scroll', ScrollTrigger.update);
     gsap.ticker.add((time) => lenis.raf(time * 1000));
-    gsap.ticker.lagSmoothing(0);
   }
 
   /* ---------- preloader ---------- */
@@ -116,8 +115,19 @@
       nav.classList.add('is-visible');
     }
 
+    let isScrolled = false;
+    let ticking = false;
+    function applyScrolledState() {
+      ticking = false;
+      const shouldBeScrolled = window.scrollY > 80;
+      if (shouldBeScrolled === isScrolled) return;
+      isScrolled = shouldBeScrolled;
+      nav.classList.toggle('is-scrolled', isScrolled);
+    }
     window.addEventListener('scroll', () => {
-      nav.classList.toggle('is-scrolled', window.scrollY > 80);
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(applyScrolledState);
     }, { passive: true });
   }
 
@@ -364,120 +374,6 @@
     });
   }
 
-  /* ---------- ambient background: rotating gear filigree ---------- */
-
-  function initBackgroundGears() {
-    const canvas = document.getElementById('bgCanvas');
-    if (!canvas || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const ctx = canvas.getContext('2d');
-    let w = 0;
-    let h = 0;
-
-    function resize() {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      w = window.innerWidth;
-      h = window.innerHeight;
-      canvas.width = w * dpr;
-      canvas.height = h * dpr;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    }
-    resize();
-    window.addEventListener('resize', resize);
-
-    function drawGear(cx, cy, radius, teeth, angle) {
-      const toothDepth = radius * 0.12;
-      const halfTooth = (Math.PI * 2 / teeth) * 0.28;
-      ctx.save();
-      ctx.translate(cx, cy);
-      ctx.rotate(angle);
-      ctx.beginPath();
-      for (let i = 0; i < teeth; i++) {
-        const a0 = i * (Math.PI * 2 / teeth);
-        ctx.lineTo(Math.cos(a0 - halfTooth) * radius, Math.sin(a0 - halfTooth) * radius);
-        ctx.lineTo(Math.cos(a0 - halfTooth) * (radius + toothDepth), Math.sin(a0 - halfTooth) * (radius + toothDepth));
-        ctx.lineTo(Math.cos(a0 + halfTooth) * (radius + toothDepth), Math.sin(a0 + halfTooth) * (radius + toothDepth));
-        ctx.lineTo(Math.cos(a0 + halfTooth) * radius, Math.sin(a0 + halfTooth) * radius);
-      }
-      ctx.closePath();
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.arc(0, 0, radius * 0.55, 0, Math.PI * 2);
-      ctx.stroke();
-      for (let s = 0; s < 4; s++) {
-        const a = s * (Math.PI / 2);
-        ctx.beginPath();
-        ctx.moveTo(Math.cos(a) * radius * 0.18, Math.sin(a) * radius * 0.18);
-        ctx.lineTo(Math.cos(a) * radius * 0.52, Math.sin(a) * radius * 0.52);
-        ctx.stroke();
-      }
-      ctx.restore();
-    }
-
-    const gears = [
-      { xRatio: 0.9, yRatio: 0.14, radius: 160, teeth: 16, speed: 0.16, angle: 0.2 },
-      { xRatio: 0.03, yRatio: 0.8, radius: 110, teeth: 12, speed: -0.24, angle: 1.1 },
-      { xRatio: 0.5, yRatio: 0.46, radius: 250, teeth: 22, speed: 0.09, angle: 0.5 },
-      { xRatio: 0.14, yRatio: 0.18, radius: 60, teeth: 10, speed: -0.3, angle: 0.8 }
-    ];
-
-    let lastTime = performance.now();
-    ctx.strokeStyle = 'rgba(235, 225, 205, 0.16)';
-    ctx.lineWidth = 1.2;
-
-    gsap.ticker.add(() => {
-      const now = performance.now();
-      const dt = Math.min((now - lastTime) / 1000, 0.05);
-      lastTime = now;
-      const velocity = lenis ? Math.abs(lenis.velocity) : 0;
-      const boost = 1 + Math.min(velocity * 0.03, 4);
-
-      ctx.clearRect(0, 0, w, h);
-      gears.forEach((g) => {
-        g.angle += g.speed * dt * boost;
-        drawGear(g.xRatio * w, g.yRatio * h, g.radius, g.teeth, g.angle);
-      });
-    });
-  }
-
-  /* ---------- ambient background: scroll-linked color halo ---------- */
-
-  function initHalo() {
-    const halo = document.getElementById('halo');
-    if (!halo) return;
-
-    const zones = [
-      { selector: '#heroPin', color: '#141210' },
-      { selector: '.manifesto', color: '#221c19' },
-      { selector: '.stats', color: '#3a2a1c' },
-      { selector: '#savoir-faire', color: '#3a2a1c' },
-      { selector: '.materials', color: '#20211f' },
-      { selector: '#maison', color: '#1c1815' }
-    ];
-
-    zones.forEach(({ selector, color }) => {
-      const el = document.querySelector(selector);
-      if (!el) return;
-      ScrollTrigger.create({
-        trigger: el,
-        start: 'top 60%',
-        end: 'bottom 40%',
-        onEnter: () => gsap.to(halo, { backgroundColor: color, duration: 1.8, ease: 'power2.out' }),
-        onEnterBack: () => gsap.to(halo, { backgroundColor: color, duration: 1.8, ease: 'power2.out' })
-      });
-    });
-
-    document.querySelectorAll('.reveal-item').forEach((item) => {
-      const color = item.style.getPropertyValue('--accent') || '#5a2420';
-      ScrollTrigger.create({
-        trigger: item,
-        start: 'top 60%',
-        end: 'bottom 40%',
-        onEnter: () => gsap.to(halo, { backgroundColor: color, duration: 1.2, ease: 'power2.out' }),
-        onEnterBack: () => gsap.to(halo, { backgroundColor: color, duration: 1.2, ease: 'power2.out' })
-      });
-    });
-  }
-
   /* ---------- key stats count-up ---------- */
 
   function initStats() {
@@ -548,16 +444,29 @@
     });
   }
 
+  // coalesces rapid-fire refresh requests (initial load, fonts ready,
+  // window load) into a single recalculation instead of forcing a full
+  // layout pass for each one.
+  let refreshTimer = null;
+  function scheduleRefresh() {
+    clearTimeout(refreshTimer);
+    refreshTimer = setTimeout(() => ScrollTrigger.refresh(), 200);
+  }
+
   function init() {
+    // uncapped, regardless of pointer type: with lagSmoothing left at its
+    // default, a slow frame (any dropped frames, not just on mobile) makes
+    // GSAP's ticker clamp its next delta, causing scroll-driven animation
+    // to visibly stutter instead of just catching up.
+    gsap.ticker.lagSmoothing(0);
+
     initSmoothScroll();
-    initBackgroundGears();
 
     // the unfurl gallery is the only pinned section left: it inserts a
     // pin-spacer that pushes down everything after it (materials, closing),
     // so it must be created before any trigger that measures their position.
     initUnfurlGallery();
 
-    initHalo();
     initRevealCollection();
     initMagnetic();
     initNav();
@@ -570,7 +479,7 @@
     initStats();
     initClosing();
     runPreloader();
-    ScrollTrigger.refresh();
+    scheduleRefresh();
 
     // custom fonts swapping in after the initial layout reflows the page
     // (text reflows to different metrics), which leaves every scroll
@@ -578,12 +487,12 @@
     // slower connection where the font takes longer to arrive. Recompute
     // once the swap is actually done.
     if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(() => ScrollTrigger.refresh());
+      document.fonts.ready.then(scheduleRefresh);
     }
 
     // images loading after layout (even non-lazy ones, on a slow
     // connection) can shift content the same way; catch stragglers too.
-    window.addEventListener('load', () => ScrollTrigger.refresh());
+    window.addEventListener('load', scheduleRefresh);
   }
 
   if (document.readyState === 'loading') {

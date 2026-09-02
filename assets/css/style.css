@@ -141,6 +141,22 @@ body {
   100% { transform: translate(0, 0); }
 }
 
+@media (pointer: coarse) {
+  /* mix-blend-mode forces the browser to re-blend the whole viewport under
+     this layer on every repaint; the shifting animation makes that happen
+     every frame. Not worth the cost on a touch device — a flat, static,
+     low-opacity layer reads close enough to the same texture. */
+  .grain {
+    animation: none;
+    mix-blend-mode: normal;
+    opacity: 0.03;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grain { animation: none; }
+}
+
 /* ---------- lightbox ---------- */
 
 .lightbox {
@@ -209,34 +225,6 @@ body {
   .lightbox-caption { bottom: 20px; font-size: 0.6rem; }
 }
 
-/* ---------- ambient background (gears + halo) ---------- */
-
-.bg-fx {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-#bgCanvas {
-  position: absolute;
-  inset: 0;
-}
-
-.halo {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 70vmax;
-  height: 70vmax;
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
-  background-color: #1a1a1a;
-  opacity: 0.14;
-  filter: blur(100px);
-}
-
 /* ---------- site nav ---------- */
 
 .site-nav {
@@ -254,7 +242,7 @@ body {
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;
-  transition: opacity 0.5s ease, transform 0.5s ease, background 0.4s ease, backdrop-filter 0.4s ease;
+  transition: opacity 0.5s ease, transform 0.5s ease, background 0.4s ease;
 }
 
 .site-nav.hero-gated {
@@ -273,6 +261,16 @@ body {
   background: rgba(0, 0, 0, 0.55);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+}
+
+@media (pointer: coarse) {
+  /* backdrop-filter re-blurs everything behind a fixed bar on every scroll
+     frame; a denser flat background reads close enough without the cost. */
+  .site-nav.is-scrolled {
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
 }
 
 .nav-mark {
@@ -1498,11 +1496,6 @@ body {
 }
 
 @media (max-width: 860px) {
-  /* 100vmax is dominated by the (tall) viewport height on portrait
-     phones, making the halo cover the entire screen in a flat wash of
-     color instead of a contained glow; size it off the width instead. */
-  .halo { width: 120vw; height: 120vw; opacity: 0.12; }
-
   .hero-pin { height: 480vh; }
   .hero-stage {
     display: flex;

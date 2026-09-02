@@ -40,13 +40,27 @@
       if (!href || isHash || isExternal || isNewTab) return;
 
       e.preventDefault();
+
+      // the tween's onComplete only fires once GSAP has actually rendered
+      // that many frames — on a page that's struggling to keep up, 0.3s of
+      // animation time can take far longer than 0.3s of real time. The
+      // navigation itself doesn't need to wait on the animation, so give
+      // it a real-time deadline and let whichever fires first win.
+      let navigated = false;
+      const go = () => {
+        if (navigated) return;
+        navigated = true;
+        window.location.href = href;
+      };
+      setTimeout(go, 400);
+
       gsap.fromTo(fade,
         { yPercent: 100 },
         {
           yPercent: 0,
           duration: 0.3,
           ease: 'power2.inOut',
-          onComplete: () => { window.location.href = href; }
+          onComplete: go
         }
       );
     });
